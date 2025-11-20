@@ -4,14 +4,11 @@ import venueData from '../../public/venue.json';
 
 const generateSeatsForSection = (section: Section): Section => {
   const sectionConfigs: { [key: string]: { rows: number; seatsPerRow: number; priceTier: number } } = {
-    'LB-A': { rows: 60, seatsPerRow: 80, priceTier: 2 },
-    'LB-B': { rows: 60, seatsPerRow: 80, priceTier: 2 },
-    'LB-C': { rows: 60, seatsPerRow: 80, priceTier: 2 },
-    'UB-A': { rows: 50, seatsPerRow: 70, priceTier: 3 },
-    'UB-B': { rows: 50, seatsPerRow: 70, priceTier: 3 },
-    'UB-C': { rows: 50, seatsPerRow: 70, priceTier: 3 },
-    'VIP-A': { rows: 20, seatsPerRow: 40, priceTier: 1 },
-    'VIP-B': { rows: 20, seatsPerRow: 40, priceTier: 1 }
+    'LB-A': { rows: 50, seatsPerRow: 100, priceTier: 2 },
+    'LB-B': { rows: 50, seatsPerRow: 100, priceTier: 2 },
+    'LB-C': { rows: 50, seatsPerRow: 100, priceTier: 2 },
+    'UB-A': { rows: 40, seatsPerRow: 80, priceTier: 3 },
+    'UB-B': { rows: 40, seatsPerRow: 80, priceTier: 3 }
   };
 
   const config = sectionConfigs[section.id] || { rows: 30, seatsPerRow: 50, priceTier: 3 };
@@ -21,7 +18,6 @@ const generateSeatsForSection = (section: Section): Section => {
     const seats: Seat[] = [];
     
     for (let seatNum = 1; seatNum <= config.seatsPerRow; seatNum++) {
-      // Random status with probabilities
       const random = Math.random();
       let status: 'available' | 'reserved' | 'unavailable' = 'available';
       if (random > 0.85) status = 'reserved';
@@ -30,8 +26,8 @@ const generateSeatsForSection = (section: Section): Section => {
       const seat: Seat = {
         id: `${section.id}-${rowIndex}-${seatNum.toString().padStart(3, '0')}`,
         col: seatNum,
-        x: section.transform.x + (seatNum * 18),
-        y: section.transform.y + (rowIndex * 22),
+        x: section.transform.x + (seatNum * 15),
+        y: section.transform.y + (rowIndex * 20),
         priceTier: config.priceTier,
         status: status
       };
@@ -68,19 +64,19 @@ export const useSeatingData = () => {
           total + section.rows.reduce((sectionTotal, row) => 
             sectionTotal + row.seats.length, 0), 0);
 
-        console.log(`Generated ${totalSeats.toLocaleString()} seats`);
+        console.log(`✅ Generated ${totalSeats.toLocaleString()} seats`);
         
         setVenue(generatedVenue);
+        setLoading(false);
+        
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to generate seating data');
-      } finally {
         setLoading(false);
       }
     };
 
-    // Simulate data generation delay
-    const timer = setTimeout(generateVenueData, 1000);
-    return () => clearTimeout(timer);
+    // Small delay to show loading state
+    setTimeout(generateVenueData, 500);
   }, []);
 
   return { venue, loading, error };

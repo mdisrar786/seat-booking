@@ -3,17 +3,9 @@ import type { SelectedSeat, Seat, SeatStatus } from '../types';
 
 const MAX_SELECTION = 8;
 
-// Debounce function for performance
-const debounce = (func: Function, wait: number) => {
-  let timeout: NodeJS.Timeout;
-  return (...args: any[]) => {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func(...args), wait);
-  };
-};
-
 export const useSeatSelection = () => {
   const [selectedSeats, setSelectedSeats] = useState<SelectedSeat[]>([]);
+  const [lastPaymentSeats, setLastPaymentSeats] = useState<SelectedSeat[]>([]);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -27,13 +19,9 @@ export const useSeatSelection = () => {
     }
   }, []);
 
-  // Debounced save to localStorage
+  // Save to localStorage whenever selectedSeats changes
   useEffect(() => {
-    const saveToStorage = debounce(() => {
-      localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats));
-    }, 500);
-
-    saveToStorage();
+    localStorage.setItem('selectedSeats', JSON.stringify(selectedSeats));
   }, [selectedSeats]);
 
   const selectSeat = useCallback((seat: Seat, sectionLabel: string, price: number) => {
@@ -73,6 +61,10 @@ export const useSeatSelection = () => {
     setSelectedSeats([]);
   }, []);
 
+  const recordPayment = useCallback(() => {
+    setLastPaymentSeats(selectedSeats);
+  }, [selectedSeats]);
+
   const isSeatSelected = useCallback((seatId: string) => {
     return selectedSeats.some(seat => seat.id === seatId);
   }, [selectedSeats]);
@@ -84,9 +76,11 @@ export const useSeatSelection = () => {
 
   return {
     selectedSeats,
+    lastPaymentSeats,
     selectSeat,
     deselectSeat,
     clearSelection,
+    recordPayment,
     isSeatSelected,
     getSeatStatus,
     maxSelection: MAX_SELECTION

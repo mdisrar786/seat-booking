@@ -31,10 +31,10 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
     e.preventDefault();
     setIsProcessing(true);
 
-    // Simulate payment processing with better UX
+    // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
-      onPaymentSuccess(); // This will trigger the success modal
+      onPaymentSuccess();
     }, 2000);
   };
 
@@ -43,23 +43,6 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
       return cardNumber.length === 16 && expiry.length === 5 && cvv.length === 3 && name && email;
     }
     return name && email;
-  };
-
-  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/\D/g, '').slice(0, 16);
-    setCardNumber(value);
-  };
-
-  const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, '');
-    if (value.length >= 2) {
-      value = value.slice(0, 2) + '/' + value.slice(2, 4);
-    }
-    setExpiry(value.slice(0, 5));
-  };
-
-  const handleCvvChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCvv(e.target.value.replace(/\D/g, '').slice(0, 3));
   };
 
   return (
@@ -83,12 +66,16 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                     <small className="text-muted">{seat.section}</small>
                   </ListGroup.Item>
                 ))}
+                
+                {/* Service Fee */}
                 <ListGroup.Item className="px-0 py-2">
                   <div className="d-flex justify-content-between text-muted">
                     <span>Service Fee</span>
                     <span>${serviceFee.toFixed(2)}</span>
                   </div>
                 </ListGroup.Item>
+                
+                {/* Total Amount */}
                 <ListGroup.Item className="px-0 py-2 fw-bold border-top">
                   <div className="d-flex justify-content-between">
                     <span>Total Amount</span>
@@ -147,7 +134,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                       type="text"
                       placeholder="1234 5678 9012 3456"
                       value={cardNumber}
-                      onChange={handleCardNumberChange}
+                      onChange={(e) => setCardNumber(e.target.value.replace(/\D/g, ''))}
                       maxLength={16}
                       required
                     />
@@ -161,7 +148,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                           type="text"
                           placeholder="MM/YY"
                           value={expiry}
-                          onChange={handleExpiryChange}
+                          onChange={(e) => setExpiry(e.target.value)}
                           maxLength={5}
                           required
                         />
@@ -174,7 +161,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
                           type="text"
                           placeholder="123"
                           value={cvv}
-                          onChange={handleCvvChange}
+                          onChange={(e) => setCvv(e.target.value.replace(/\D/g, ''))}
                           maxLength={3}
                           required
                         />

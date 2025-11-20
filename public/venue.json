@@ -2,56 +2,38 @@
   "venueId": "arena-01",
   "name": "Metropolis Mega Arena",
   "map": {
-    "width": 2500,
-    "height": 1800
+    "width": 2000,
+    "height": 1500
   },
   "sections": [
     {
       "id": "LB-A",
       "label": "Lower Bowl A",
-      "transform": { "x": 50, "y": 50, "scale": 1 },
+      "transform": { "x": 100, "y": 100, "scale": 1 },
       "rows": []
     },
     {
       "id": "LB-B", 
       "label": "Lower Bowl B",
-      "transform": { "x": 700, "y": 50, "scale": 1 },
+      "transform": { "x": 600, "y": 100, "scale": 1 },
       "rows": []
     },
     {
       "id": "LB-C",
       "label": "Lower Bowl C", 
-      "transform": { "x": 1350, "y": 50, "scale": 1 },
+      "transform": { "x": 1100, "y": 100, "scale": 1 },
       "rows": []
     },
     {
       "id": "UB-A",
       "label": "Upper Bowl A",
-      "transform": { "x": 50, "y": 700, "scale": 0.9 },
+      "transform": { "x": 100, "y": 600, "scale": 1 },
       "rows": []
     },
     {
       "id": "UB-B",
       "label": "Upper Bowl B",
-      "transform": { "x": 700, "y": 700, "scale": 0.9 },
-      "rows": []
-    },
-    {
-      "id": "UB-C",
-      "label": "Upper Bowl C",
-      "transform": { "x": 1350, "y": 700, "scale": 0.9 },
-      "rows": []
-    },
-    {
-      "id": "VIP-A",
-      "label": "VIP Premium",
-      "transform": { "x": 1800, "y": 50, "scale": 1.1 },
-      "rows": []
-    },
-    {
-      "id": "VIP-B",
-      "label": "VIP Executive",
-      "transform": { "x": 1800, "y": 400, "scale": 1.1 },
+      "transform": { "x": 600, "y": 600, "scale": 1 },
       "rows": []
     }
   ]

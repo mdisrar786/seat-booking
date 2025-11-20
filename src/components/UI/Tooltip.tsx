@@ -7,18 +7,20 @@ interface TooltipProps {
   visible: boolean;
 }
 
-export const Tooltip: React.FC<TooltipProps> = ({ content, x, y, visible }) => {
+export const Tooltip: React.FC<TooltipProps> = React.memo(({ content, x, y, visible }) => {
   if (!visible) return null;
 
   return (
     <div 
-      className="tooltip fade show"
+      className="tooltip"
       style={{
         position: 'absolute',
-        left: x + 10,
-        top: y - 10,
+        left: x + 20, // Fixed offset from seat
+        top: y - 40,  // Fixed offset above seat
         zIndex: 1000,
-        transform: 'translateY(-100%)'
+        pointerEvents: 'none',
+        // Remove all transitions that could cause movement
+        transition: 'none'
       }}
     >
       <div className="tooltip-inner bg-dark text-white p-2 rounded shadow">
@@ -26,4 +28,6 @@ export const Tooltip: React.FC<TooltipProps> = ({ content, x, y, visible }) => {
       </div>
     </div>
   );
-};
+});
+
+Tooltip.displayName = 'Tooltip';

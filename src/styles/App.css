@@ -1,12 +1,44 @@
+/* Enhanced Navigation Styles */
+.seating-map-container {
+  font-family: system-ui, sans-serif;
+}
 
-.zoom-controls-group {
+.svg-container {
+  border: 2px solid #dee2e6;
+  border-radius: 12px;
+  background: white;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.svg-container:hover {
+  border-color: #007bff;
+}
+
+.seating-map-svg {
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+/* Enhanced Zoom Controls */
+.map-controls {
+  padding: 1rem;
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.zoom-controls {
   background: #f8f9fa;
   padding: 0.5rem;
   border-radius: 8px;
   border: 1px solid #dee2e6;
 }
 
-.zoom-btn {
+.zoom-controls .btn {
   width: 36px;
   height: 36px;
   display: flex;
@@ -14,56 +46,112 @@
   justify-content: center;
   padding: 0;
   border-radius: 6px;
+  font-weight: bold;
+}
+
+/* Seat Styles */
+.seating-map-svg .seat {
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.zoom-btn:hover:not(:disabled) {
-  transform: scale(1.05);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.seating-map-svg .seat:hover .seat-circle {
+  stroke-width: 2px;
+  filter: brightness(1.2);
 }
 
-.zoom-level-display {
+.seating-map-svg .available .seat-circle {
+  fill: #28a745;
+}
+
+.seating-map-svg .selected .seat-circle {
+  fill: #007bff;
+}
+
+.seating-map-svg .reserved .seat-circle {
+  fill: #6c757d;
+  cursor: not-allowed;
+}
+
+.seating-map-svg .unavailable .seat-circle {
+  fill: #dc3545;
+  cursor: not-allowed;
+}
+
+/* Viewport Indicator */
+.viewport-indicator {
+  pointer-events: none;
+}
+
+/* Tooltip */
+.tooltip-inner {
+  background: rgba(0, 0, 0, 0.95);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Zoom Level Indicator */
+.zoom-indicator {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Section Labels */
+.section-label {
+  text-shadow: 1px 1px 2px white;
+  font-family: system-ui, sans-serif;
+}
+
+/* Navigation Instructions */
+.navigation-tips {
+  font-size: 0.9rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .map-controls {
+    padding: 0.75rem;
+  }
+  
+  .zoom-controls .btn {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .navigation-tips span {
+    display: block;
+    margin: 0.25rem 0;
+  }
+}
+
+/* Loading State */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.95);
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 120px;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: 12px;
 }
 
-.zoom-percentage {
-  font-size: 0.9rem;
-  color: #495057;
-  margin-bottom: 2px;
-}
-
-.zoom-slider {
-  width: 100px;
-}
-
-.zoom-slider input[type="range"] {
-  height: 4px;
-  background: #dee2e6;
-  border-radius: 2px;
-}
-
-.zoom-slider input[type="range"]::-webkit-slider-thumb {
-  width: 16px;
-  height: 16px;
-  background: #007bff;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.zoom-slider input[type="range"]::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  background: #007bff;
-  border-radius: 50%;
-  cursor: pointer;
-  border: none;
-}
-
+/* Success Modal Styles */
 .success-icon {
-  font-size: 3rem;
+  font-size: 4rem;
+  display: block;
   animation: bounce 0.6s ease;
 }
 
@@ -79,92 +167,8 @@
   }
 }
 
-.booking-details {
-  background: #f8f9fa;
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
-}
-
-/* Enhanced SVG Performance */
-.svg-container {
+.booking-summary {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
   border: 1px solid #dee2e6;
-  border-radius: 8px;
-  background: white;
-  overflow: hidden;
-  position: relative;
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-.seating-map-svg {
-  background: #f8f9fa;
-  shape-rendering: geometricPrecision;
-  text-rendering: optimizeLegibility;
-}
-
-/* Smooth zoom transitions */
-.seating-map-svg * {
-  transition: opacity 0.15s ease;
-}
-
-/* Better tooltip */
-.tooltip-inner {
-  background: rgba(0, 0, 0, 0.95);
-  color: white;
-  padding: 0.5rem 0.75rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* Loading states */
-.loading-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.98);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  border-radius: 8px;
-}
-
-/* Responsive zoom controls */
-@media (max-width: 768px) {
-  .zoom-level-display {
-    min-width: 100px;
-  }
-  
-  .zoom-slider {
-    width: 80px;
-  }
-  
-  .zoom-btn {
-    width: 32px;
-    height: 32px;
-  }
-}
-
-/* High-performance mode for low zoom */
-.performance-mode .seat {
-  pointer-events: none;
-}
-
-.performance-mode .seat-circle {
-  stroke-width: 0.5;
-}
-
-/* Print styles */
-@media print {
-  .zoom-controls-group,
-  .map-controls-wrapper {
-    display: none !important;
-  }
+  border-radius: 10px;
 }

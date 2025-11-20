@@ -12,18 +12,6 @@ interface SeatProps {
   zoomLevel: number;
 }
 
-// Pre-computed sizes for different zoom levels
-const SEAT_SIZES = {
-  0.1: 4, 0.2: 5, 0.3: 6, 0.4: 7, 0.5: 8, 0.6: 9, 0.7: 10, 
-  0.8: 11, 0.9: 12, 1.0: 13, 1.1: 14, 1.2: 15, 1.3: 16, 
-  1.4: 17, 1.5: 18, 2.0: 20, 3.0: 22
-};
-
-const getSeatSize = (zoomLevel: number): number => {
-  const roundedZoom = Math.round(zoomLevel * 10) / 10;
-  return SEAT_SIZES[roundedZoom as keyof typeof SEAT_SIZES] || 8;
-};
-
 export const Seat: React.FC<SeatProps> = React.memo(({ 
   seat, 
   sectionLabel, 
@@ -34,29 +22,29 @@ export const Seat: React.FC<SeatProps> = React.memo(({
   zoomLevel 
 }) => {
   const price = getSeatPrice(seat.priceTier);
-  const seatSize = getSeatSize(zoomLevel);
+  const seatSize = Math.max(6, Math.min(20, 12 * zoomLevel));
   const showLabel = zoomLevel > 0.6;
   
-  const handleClick = React.useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleClick = () => {
     if (status === 'available' || status === 'selected') {
       onSelect(seat, sectionLabel, price);
     }
-  }, [seat, sectionLabel, price, status, onSelect]);
+  };
 
-  const handleMouseEnter = React.useCallback((e: React.MouseEvent<SVGGElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    onHover(seat, sectionLabel, price, rect.left + rect.width / 2, rect.top);
-  }, [seat, sectionLabel, price, onHover]);
+  const handleMouseEnter = () => {
+    onHover(seat, sectionLabel, price, seat.x, seat.y);
+  };
 
-  const handleMouseLeave = React.useCallback(() => {
+  const handleMouseLeave = () => {
     onLeave();
-  }, [onLeave]);
+  };
 
-  // Don't render unavailable seats at low zoom levels for performance
-  if (zoomLevel < 0.3 && status === 'unavailable') {
+  // Don't render unavailable seats at very low zoom for performance
+  if (zoomLevel < 0.2 && status === 'unavailable') {
     return null;
   }
+
+  const isInteractive = status === 'available' || status === 'selected';
 
   return (
     <g 
@@ -65,14 +53,17 @@ export const Seat: React.FC<SeatProps> = React.memo(({
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      style={{ cursor: status === 'available' || status === 'selected' ? 'pointer' : 'not-allowed' }}
     >
       <circle
         r={seatSize}
         fill={getSeatColor(status)}
         stroke="#fff"
         strokeWidth={1}
-        className={`seat-circle ${status}`}
+        className="seat-circle"
+        style={{ 
+          cursor: isInteractive ? 'pointer' : 'not-allowed',
+          transition: 'fill 0.2s ease'
+        }}
       />
       {showLabel && (
         <text
@@ -82,19 +73,12 @@ export const Seat: React.FC<SeatProps> = React.memo(({
           fill="#fff"
           fontWeight="bold"
           className="seat-label"
+          style={{ pointerEvents: 'none' }}
         >
           {seat.col}
         </text>
       )}
     </g>
-  );
-}, (prevProps, nextProps) => {
-  // Custom comparison function for React.memo
-  return (
-    prevProps.seat.id === nextProps.seat.id &&
-    prevProps.status === nextProps.status &&
-    prevProps.zoomLevel === nextProps.zoomLevel &&
-    prevProps.sectionLabel === nextProps.sectionLabel
   );
 });
 

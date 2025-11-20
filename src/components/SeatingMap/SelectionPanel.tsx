@@ -73,13 +73,13 @@ export const SelectionPanel: React.FC<SelectionPanelProps> = ({
             <span>Subtotal:</span>
             <span>${totalPrice}</span>
           </div>
-          <div className="d-flex justify-content-between mb-2">
+          <div className="d-flex justify-content-between mb-2 text-muted">
             <span>Service Fee:</span>
             <span>${serviceFee.toFixed(2)}</span>
           </div>
           <div className="d-flex justify-content-between fw-bold border-top pt-2">
-            <span>Total:</span>
-            <span>${finalTotal.toFixed(2)}</span>
+            <span>Total Amount:</span>
+            <span className="text-primary">${finalTotal.toFixed(2)}</span>
           </div>
         </Card.Body>
       )}
@@ -104,7 +104,7 @@ export const SelectionPanel: React.FC<SelectionPanelProps> = ({
           className="w-100"
           onClick={onCheckout}
         >
-          Proceed to Checkout
+          {selectedSeats.length > 0 ? `Pay $${finalTotal.toFixed(2)}` : 'Proceed to Checkout'}
         </Button>
         
         {selectedSeats.length > 0 && (
