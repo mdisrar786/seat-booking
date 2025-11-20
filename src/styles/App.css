@@ -1,0 +1,170 @@
+
+.zoom-controls-group {
+  background: #f8f9fa;
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.zoom-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.zoom-btn:hover:not(:disabled) {
+  transform: scale(1.05);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.zoom-level-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120px;
+}
+
+.zoom-percentage {
+  font-size: 0.9rem;
+  color: #495057;
+  margin-bottom: 2px;
+}
+
+.zoom-slider {
+  width: 100px;
+}
+
+.zoom-slider input[type="range"] {
+  height: 4px;
+  background: #dee2e6;
+  border-radius: 2px;
+}
+
+.zoom-slider input[type="range"]::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.zoom-slider input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.success-icon {
+  font-size: 3rem;
+  animation: bounce 0.6s ease;
+}
+
+@keyframes bounce {
+  0%, 20%, 60%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  80% {
+    transform: translateY(-5px);
+  }
+}
+
+.booking-details {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+/* Enhanced SVG Performance */
+.svg-container {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+  position: relative;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.seating-map-svg {
+  background: #f8f9fa;
+  shape-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
+}
+
+/* Smooth zoom transitions */
+.seating-map-svg * {
+  transition: opacity 0.15s ease;
+}
+
+/* Better tooltip */
+.tooltip-inner {
+  background: rgba(0, 0, 0, 0.95);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Loading states */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.98);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: 8px;
+}
+
+/* Responsive zoom controls */
+@media (max-width: 768px) {
+  .zoom-level-display {
+    min-width: 100px;
+  }
+  
+  .zoom-slider {
+    width: 80px;
+  }
+  
+  .zoom-btn {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* High-performance mode for low zoom */
+.performance-mode .seat {
+  pointer-events: none;
+}
+
+.performance-mode .seat-circle {
+  stroke-width: 0.5;
+}
+
+/* Print styles */
+@media print {
+  .zoom-controls-group,
+  .map-controls-wrapper {
+    display: none !important;
+  }
+}
